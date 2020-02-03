@@ -21,7 +21,7 @@ class HomeFragment : Fragment() {
         view.findViewById<MaterialButton>(R.id.adddevice).setOnClickListener {
 
             val ft = fragmentManager?.beginTransaction()
-            ft?.replace(R.id.contain,WifiListFragment())
+            ft?.replace(R.id.contain,DeviceListFragment())
             ft?.addToBackStack("Main")
             ft?.commit()
 

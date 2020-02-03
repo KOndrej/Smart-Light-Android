@@ -24,6 +24,10 @@ class DeviceListFragment: Fragment() {
         listView.setOnItemClickListener { parent, view, position, id ->
             when(text[position]){
                 "Addressable LED Strip" -> {
+                    val ft = fragmentManager?.beginTransaction()
+                    ft?.replace(R.id.contain,LightSettingsFragment())
+                    ft?.addToBackStack("Main")
+                    ft?.commit()
 
                 }
             }

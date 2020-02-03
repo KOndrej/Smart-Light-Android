@@ -15,17 +15,18 @@ class WifiListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var items = ArrayList<String>()
-        items.add("WIFI")
-        items.add("WIFI")
-        items.add("WIFI")
-        items.add("WIFI")
-        items.add("WIFI")
-        items.add("WIFI")
-        items.add("WIFI")
-        items.add("WIFI")
         var view = inflater.inflate(R.layout.wifi_list_fragment, container, false)
-        var adapter = ArrayAdapter<String>(context!!.applicationContext,android.R.layout.simple_list_item_1,items)
+        var text = ArrayList<String>()
+        text.add("WIFI1")
+        text.add("WIFI2")
+        text.add("WIFI3")
+        text.add("WIFI4")
+        text.add("WIFI5")
+        text.add("WIFI6")
+
+        val adapter = WifiAdapter(context!!.applicationContext,text)
+        val listView=  view.findViewById<ListView>(R.id.wifiListView)
+        listView.adapter = adapter
         view.findViewById<ListView>(R.id.wifiListView).adapter = adapter
 
         return view

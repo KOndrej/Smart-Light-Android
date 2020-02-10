@@ -1,34 +1,64 @@
 package com.cubanstudio.smartlight
 
+import android.content.Context
+import android.content.IntentFilter
+import android.net.MacAddress
+import android.net.wifi.ScanResult
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import com.google.android.material.textview.MaterialTextView
 
 class WifiListFragment : Fragment() {
+    var wifiList = ArrayList<WifiItem>()
+    lateinit var adapter : WifiAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var items = ArrayList<String>()
-        items.add("WIFI")
-        items.add("WIFI")
-        items.add("WIFI")
-        items.add("WIFI")
-        items.add("WIFI")
-        items.add("WIFI")
-        items.add("WIFI")
-        items.add("WIFI")
+        val mWifiManager:WifiManager = context?.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val scanReceiver = WiFiScanReceiver(mWifiManager,this)
+        val intentFilter = IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
+        context?.registerReceiver(scanReceiver,intentFilter)
+        mWifiManager.startScan()
+
+        var results =  mWifiManager.scanResults
+        results.forEach {
+            var locked = (it.capabilities.contains("WEP")||it.capabilities.contains("PSK")||it.capabilities.contains("EAP"))
+
+            wifiList.add(WifiItem(it.SSID,"",it.level,locked))
+        }
+        wifiList.sortBy {  it.wifiStrength}
+        wifiList.reverse()
         var view = inflater.inflate(R.layout.wifi_list_fragment, container, false)
-        var adapter = ArrayAdapter<String>(context!!.applicationContext,android.R.layout.simple_list_item_1,items)
+
+
+        adapter = WifiAdapter(context!!.applicationContext,wifiList)
+        val listView=  view.findViewById<ListView>(R.id.wifiListView)
+        listView.adapter = adapter
+        listView.onItemClickListener = wifiItemClickListener
         view.findViewById<ListView>(R.id.wifiListView).adapter = adapter
 
         return view
     }
-
-}
+    var wifiItemClickListener = AdapterView.OnItemClickListener(){parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
+        if(wifiList[position].locked){
+            val ft = fragmentManager?.beginTransaction()
+            ft?.replace(R.id.contain,WifiLoginFragment(wifiList[position].wifiName, wifiList[position].wifiMac))
+            ft?.addToBackStack("Main")
+            ft?.commit()
+        }else{
+            val ft = fragmentManager?.beginTransaction()
+            ft?.replace(R.id.contain,WifiLoginFragment(wifiList[position].wifiName, wifiList[position].wifiMac))
+            ft?.addToBackStack("Main")
+            ft?.commit()
+        }
+    }
+    }

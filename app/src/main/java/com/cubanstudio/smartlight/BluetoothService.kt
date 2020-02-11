@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import java.lang.Exception
 import java.lang.IllegalArgumentException
 
 class BluetoothService(context: Context){
@@ -46,15 +47,22 @@ class BluetoothService(context: Context){
         }
         return null
     }
-
+    fun disconnect(){
+        comThread.closeStream()
+    }
     fun connectDevice(device: BluetoothDevice){
-        socket = device.createInsecureRfcommSocketToServiceRecord(device.uuids[0].uuid)
-        socket.connect()
-        if(socket.isConnected){
-            comThread = CommunicationThread(socket.inputStream,socket.outputStream,applicationContext)
-            comThread.listenForData()
-            //  verifyDevice()
-        }
+        try {
+
+            socket = device.createInsecureRfcommSocketToServiceRecord(device.uuids[0].uuid)
+            socket.connect()
+            if (socket.isConnected) {
+                comThread =
+                    CommunicationThread(socket.inputStream, socket.outputStream, applicationContext)
+                comThread.listenForData()
+                //  verifyDevice()
+            }
+
+        }catch (e: Exception){e.printStackTrace()}
     }
 
     fun isConnected():Boolean{

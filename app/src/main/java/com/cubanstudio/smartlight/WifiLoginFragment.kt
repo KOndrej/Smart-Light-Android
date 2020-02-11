@@ -13,7 +13,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 
@@ -36,11 +38,13 @@ class WifiLoginFragment(private val wifiSSID:String,private val wifiBSSID: Strin
         //incomeDataFilter.addAction("")
         context?.registerReceiver(dataReceiver,incomeDataFilter)
         connectBut.setOnClickListener {
-            btService.sendData("PASS","PASSWORD")
+            btService.sendData("CONNECT",wifiSSID+";"+passwordField.text.toString())
         }
 
         return view
     }
+
+
     val dataReceiver = object : BroadcastReceiver(){
         override fun onReceive(p0: Context?, intent: Intent?) {
             val incoming_data = intent?.getStringExtra("DATA")
@@ -52,17 +56,20 @@ class WifiLoginFragment(private val wifiSSID:String,private val wifiBSSID: Strin
                         wifiArrayAdapter.notifyDataSetChanged()}*/
                 }
                 "IPAD" -> {
-                   /* Toast.makeText(
-                        applicationContext,
-                        "WiFi IP : " + incoming_data,
-                        Toast.LENGTH_SHORT
-                    ).show()*/
+
+                    btService.disconnect()
+                    fragmentManager?.popBackStack("Main",FragmentManager.POP_BACK_STACK_INCLUSIVE)
+
                 }
                 "CONNECTING" ->{
                     when(incoming_data){
-                        "0" ->{}
-                        "1" ->{}
-                        "2" ->{}
+                        "0" ->{
+                            Log.e("CONNECTING","CONNECTED")
+
+
+                        }
+                        "1" ->{Log.e("CONNECTING",".............")}
+                        "2" ->{Log.e("CONNECTING","FAILED")}
                     }
 
                 }

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 
 class DeviceListFragment: Fragment() {
     lateinit var btService: BluetoothService
+    private val key = "\$=EF%@gR;[M+SLWx*i%m@qA}x6kDl."
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,12 +31,15 @@ class DeviceListFragment: Fragment() {
         }else{
             //TODO find and bond with device
         }
+        if(btService.isConnected())
+            verifyDevice()
         listView.setOnItemClickListener { parent, view, position, id ->
             when(text[position]){
                 "Addressable LED Strip" -> {
                     val ft = fragmentManager?.beginTransaction()
-                    ft?.replace(R.id.contain,LightSettingsFragment())
-                    ft?.addToBackStack("Main")
+                    ft?.replace(R.id.contain,LightSettingsFragment(btService))
+                    ft?.addToBackStack("Settings")
+
                     ft?.commit()
 
                 }
@@ -43,5 +47,7 @@ class DeviceListFragment: Fragment() {
         }
         return view
     }
-
+    private fun verifyDevice() {
+        btService.sendData("VER",key)
+    }
 }

@@ -25,7 +25,7 @@ class LightSettingsFragment(var btService: BluetoothService) : Fragment() {
         view.findViewById<MaterialButton>(R.id.continues).setOnClickListener {
             val ft = fragmentManager?.beginTransaction()
             ft?.replace(R.id.contain,WifiListFragment(btService))
-            ft?.addToBackStack("Main")
+            ft?.addToBackStack("Settings")
             ft?.commit()
 
         }

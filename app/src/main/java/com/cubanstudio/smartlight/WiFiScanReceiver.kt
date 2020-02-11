@@ -11,13 +11,17 @@ class WiFiScanReceiver(var wifiManager: WifiManager,var fragment: WifiListFragme
         if(intent?.action.equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)){
             fragment.wifiList.clear()
             wifiManager.scanResults.forEach {
-                var locked = (it.capabilities.contains("WEP")||it.capabilities.contains("PSK")||it.capabilities.contains("EAP"))
-                val item = WifiItem(it.SSID,"",it.level,locked)
+                if (it.frequency < 2500){ //filter out 5ghz networks
+                var locked =
+                    (it.capabilities.contains("WEP") || it.capabilities.contains("PSK") || it.capabilities.contains(
+                        "EAP"
+                    ))
+                val item = WifiItem(it.SSID, "", it.level, locked)
 
-                    fragment.wifiList.add(item)
+                fragment.wifiList.add(item)
 
 
-
+            }
             }
             fragment.wifiList.sortBy {  it.wifiStrength}
             fragment.wifiList.reverse()

@@ -9,6 +9,7 @@ import android.widget.ListView
 import androidx.fragment.app.Fragment
 
 class DeviceListFragment: Fragment() {
+    lateinit var btService: BluetoothService
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -21,6 +22,14 @@ class DeviceListFragment: Fragment() {
         val adapter = DeviceAdapter(context!!.applicationContext,text)
         val listView=  view.findViewById<ListView>(R.id.devices)
         listView.adapter = adapter
+        val appcontext = context!!.applicationContext
+        btService = BluetoothService(appcontext)
+        btService.bluetoothInit()
+        if(btService.getTargetDevice(resources.getString(R.string.target_device))!=null){
+            btService.connectDevice(btService.getFoundDevice())
+        }else{
+            //TODO find and bond with device
+        }
         listView.setOnItemClickListener { parent, view, position, id ->
             when(text[position]){
                 "Addressable LED Strip" -> {

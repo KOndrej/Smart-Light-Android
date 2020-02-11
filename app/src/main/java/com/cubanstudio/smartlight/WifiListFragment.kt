@@ -15,7 +15,7 @@ import android.widget.ListView
 import androidx.fragment.app.Fragment
 import com.google.android.material.textview.MaterialTextView
 
-class WifiListFragment : Fragment() {
+class WifiListFragment(private var btService: BluetoothService) : Fragment() {
     var wifiList = ArrayList<WifiItem>()
     lateinit var adapter : WifiAdapter
     override fun onCreateView(
@@ -51,12 +51,12 @@ class WifiListFragment : Fragment() {
     var wifiItemClickListener = AdapterView.OnItemClickListener(){parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
         if(wifiList[position].locked){
             val ft = fragmentManager?.beginTransaction()
-            ft?.replace(R.id.contain,WifiLoginFragment(wifiList[position].wifiName, wifiList[position].wifiMac))
+            ft?.replace(R.id.contain,WifiLoginFragment(wifiList[position].wifiName, wifiList[position].wifiMac,btService))
             ft?.addToBackStack("Main")
             ft?.commit()
         }else{
             val ft = fragmentManager?.beginTransaction()
-            ft?.replace(R.id.contain,WifiLoginFragment(wifiList[position].wifiName, wifiList[position].wifiMac))
+            ft?.replace(R.id.contain,WifiLoginFragment(wifiList[position].wifiName, wifiList[position].wifiMac,btService))
             ft?.addToBackStack("Main")
             ft?.commit()
         }

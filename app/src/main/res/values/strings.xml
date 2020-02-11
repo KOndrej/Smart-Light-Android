@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Smart Light</string>
+    <string name="target_device">Smart Light</string>
 </resources>

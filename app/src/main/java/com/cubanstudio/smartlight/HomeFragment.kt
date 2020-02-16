@@ -17,6 +17,10 @@ import kotlinx.android.synthetic.main.activity_screen_slide.*
 import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeFragment : Fragment() {
+    companion object IPadress{
+        lateinit var address : String
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,6 +47,13 @@ class HomeFragment : Fragment() {
             ft?.commit()
 
         }
+        view.findViewById<MaterialButton>(R.id.POST).setOnClickListener {
+
+            var api = CallAPI()
+            api.execute(address,"","")
+        }
         return view
     }
+
+
 }

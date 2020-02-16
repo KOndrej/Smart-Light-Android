@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_screen_slide.*
 private const val NUM_PAGES = 5
 
 class MainActivity : FragmentActivity() {
-
+    public var x = ""
     private lateinit var mPager: ViewPager
     val navigationlistener = BottomNavigationView.OnNavigationItemSelectedListener {
         when(it.itemId){
@@ -78,12 +78,15 @@ class MainActivity : FragmentActivity() {
         override fun getCount(): Int = NUM_PAGES
 
         override fun getItem(position: Int): Fragment{
+            navbar.selectedItemId = position
             when(position){
-                0 -> return HomeFragment()
-                1 -> return EffectsFragment()
-                2 -> return MusicFragment()
-                3 -> return OnOffFragment()
-                4 -> return PresetsFragment()
+                0 -> {
+
+                    return HomeFragment() }
+                1 -> {return PresetsFragment()}
+                2 -> {return MusicFragment()}
+                3 -> {return OnOffFragment()}
+                4 -> {return EffectsFragment()}
 
             }
             return AlarmFragment()

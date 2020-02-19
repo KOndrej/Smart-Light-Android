@@ -26,6 +26,7 @@
         android:layout_marginEnd="32dp"
         android:text="ADD ROUTINE +"
         android:textColor="#FFFFFF"
+        app:cornerRadius="15dp"
         app:backgroundTint="#00000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

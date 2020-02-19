@@ -78,7 +78,7 @@ class MainActivity : FragmentActivity() {
         override fun getCount(): Int = NUM_PAGES
 
         override fun getItem(position: Int): Fragment{
-            navbar.selectedItemId = position
+
             when(position){
                 0 -> {
 

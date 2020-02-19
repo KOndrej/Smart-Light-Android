@@ -10,7 +10,7 @@ import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.presets_fragment.*
 
 class PresetsFragment :Fragment(){
-    private var routines = ArrayList<Routine>()
+    public var routines = ArrayList<Routine>()
     lateinit var adapter: RoutinesAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,7 +21,7 @@ class PresetsFragment :Fragment(){
         view.findViewById<MaterialButton>(R.id.addRoutine).setOnClickListener {
 
             val ft = fragmentManager?.beginTransaction()
-            ft?.replace(R.id.contain,PresetCreateFragment())
+            ft?.replace(R.id.contain,PresetCreateFragment(this))
             ft?.addToBackStack("Presets")
             ft?.commit()
         }
@@ -29,7 +29,7 @@ class PresetsFragment :Fragment(){
         adapter = RoutinesAdapter(context!!.applicationContext,routines)
         val list = view.findViewById<ListView>(R.id.routinesList)
         list.adapter = adapter
-        routines.add(Routine("Alarm","6:00",true, arrayListOf(true,true,true,true,true,true,true)))
+       // routines.add(Routine("Alarm","6:00",true, arrayListOf(true,true,true,true,true,true,true)))
         adapter.notifyDataSetChanged()
 
 

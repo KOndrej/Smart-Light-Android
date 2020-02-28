@@ -7,32 +7,12 @@
     android:background="@drawable/background">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/adddevice"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="130dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="32dp"
-
-
-        android:fontFamily="@font/raleway_semibold"
-        android:text="Add Device"
-        android:textColor="#FFFFFF"
-
-        app:backgroundTint="#00000000"
-        app:cornerRadius="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:strokeColor="#FFFFFF"
-        app:strokeWidth="1dp" />
-
-    <com.google.android.material.button.MaterialButton
         android:id="@+id/POST"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="130dp"
         android:layout_height="55dp"
 
-
+        android:visibility="gone"
         android:fontFamily="@font/raleway_semibold"
         android:text="POST"
         android:textColor="#FFFFFF"
@@ -43,20 +23,107 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/adddevice"
+
         app:strokeColor="#FFFFFF"
         app:strokeWidth="1dp" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:fontFamily="@font/raleway_bold"
-        android:text="Smart Light"
-        android:textColor="#FFFFFF"
-        android:textSize="36sp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout10"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="54dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/materialButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="#00000000"
+            app:icon="@drawable/ic_arrow_left"
+            app:iconTint="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="#00000000"
+            app:strokeWidth="0dp" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/materialButton2"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="#00000000"
+            app:icon="@drawable/ic_arrow_right"
+            app:iconTint="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="#00000000"
+            app:strokeWidth="0dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/adddevice"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="130dp"
+            android:layout_height="55dp"
+
+
+            android:fontFamily="@font/raleway_semibold"
+            android:text="Add Device"
+
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#00000000"
+            app:cornerRadius="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/materialButton2"
+            app:layout_constraintStart_toEndOf="@+id/materialButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="#FFFFFF"
+            app:strokeWidth="1dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout10"
+        app:layout_constraintVertical_bias="0.0"
+        app:lottie_autoPlay="true"
+
+        app:lottie_enableMergePathsForKitKatAndAbove="true"
+        app:lottie_loop="false"
+        app:lottie_rawRes="@raw/welcomeanim12" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/H"
+        android:layout_marginBottom="4dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:thumbColor="#FBCF0B"
+        app:labelBehavior="gone"
+        app:trackHeight="10dp"
+
+        app:trackColor="#FBCF0B"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+
+
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

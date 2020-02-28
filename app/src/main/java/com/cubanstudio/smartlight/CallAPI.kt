@@ -23,7 +23,7 @@ class CallAPI() : AsyncTask<String,String,String>() {
             val connection = url.openConnection() as HttpURLConnection
             //connection.requestMethod = "POST"
             val out = BufferedOutputStream(connection.outputStream)
-            var writer = BufferedWriter(OutputStreamWriter(out,"UTF-8"))
+            var writer = BufferedWriter(OutputStreamWriter(out,Charsets.UTF_8))
             writer.write(data)
             writer.flush()
             writer.close()

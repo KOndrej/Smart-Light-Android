@@ -85,7 +85,7 @@ class MainActivity : FragmentActivity() {
 
                     return HomeFragment() }
                 1 -> {return PresetsFragment()}
-                2 -> {return MusicFragment()}
+                2 -> {return ExploreFragment()}
                 3 -> {return OnOffFragment()}
                 4 -> {return EffectsFragment()}
 

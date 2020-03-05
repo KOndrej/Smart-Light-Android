@@ -8,6 +8,7 @@ import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
@@ -15,6 +16,7 @@ import android.view.animation.AnimationSet
 import android.view.animation.TranslateAnimation
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieProperty
 import com.airbnb.lottie.RenderMode
@@ -37,7 +39,7 @@ class HomeFragment : Fragment() {
     companion object IPadress {
         lateinit var address: String
     }
-
+var first = 0f
     var effects = arrayListOf<String>("SOLID", "PULSING", "TWINKLE","PHASING", "RAINBOW", "MUSIC")
     var actualeffect = 0
 
@@ -75,8 +77,37 @@ class HomeFragment : Fragment() {
             }
         )
         animation.setRenderMode(RenderMode.HARDWARE)
+        animation.setOnTouchListener { view, event ->
+            animation.setMaxFrame(135)
+            animation.setMinFrame(0)
+            animation.cancelAnimation()
+            var screenX = event.getX()
+            var screenY = event.getY()
+            var viewX = screenX - view.left
+            var viewY = screenY - view.top
+            var height= view.height
+            var width = view.width
+
+            when(event.action){
+                MotionEvent.ACTION_DOWN -> {
+                    first = viewY
+                    true
+                }
+                MotionEvent.ACTION_UP-> {
+                    false
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    animation.progress = (((first - viewY)/height))
+                    animation.pauseAnimation()
+
+                    true
+                }
+            }
+            false
+        }
         animation.setOnClickListener {
-            if (on) {
+
+            /*if (on) {
                 val a = AlphaAnimation(1f, 0f)
                 a.duration = 1200
                 a.repeatCount = 0
@@ -106,7 +137,11 @@ class HomeFragment : Fragment() {
                 data += "AAAA" + "\u0004\r"
                 sendMessage(data)
                 on = true
-            }
+            }*/
+
+
+
+
         }
 
         colorslider.addOnChangeListener { slider, value, fromUser ->

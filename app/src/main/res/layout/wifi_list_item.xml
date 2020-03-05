@@ -40,6 +40,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_signal_wifi_3_lock" />
+        app:srcCompat="@drawable/ic_signal_wifi_0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

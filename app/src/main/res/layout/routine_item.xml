@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:thumbTint="#03A9F4"
         app:trackTint="#00BCD4"
-        android:theme="@style/AppTheme"/>
+        android:theme="@style/Base.Theme"/>
 
     <TextView
         android:id="@+id/routinelabel"

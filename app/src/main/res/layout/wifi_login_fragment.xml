@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/list_background"
             android:foregroundGravity="top"
-            android:gravity="top|left"
+            android:gravity="top|start"
             android:inputType="textPassword"
             android:textColor="#FFFFFF"
             android:textSize="24sp" />

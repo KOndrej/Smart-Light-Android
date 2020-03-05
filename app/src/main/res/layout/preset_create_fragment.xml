@@ -242,7 +242,7 @@
             android:backgroundTint="#0000FFFF"
             android:ems="10"
             android:fontFamily="@font/raleway_semibold"
-            android:gravity="right"
+            android:gravity="end"
             android:inputType="textPersonName"
             android:text="Alarm"
             app:layout_constraintBottom_toBottomOf="parent"

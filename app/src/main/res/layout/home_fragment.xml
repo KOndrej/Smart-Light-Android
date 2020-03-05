@@ -12,10 +12,10 @@
         android:layout_width="130dp"
         android:layout_height="55dp"
 
-        android:visibility="gone"
         android:fontFamily="@font/raleway_semibold"
         android:text="POST"
         android:textColor="#FFFFFF"
+        android:visibility="gone"
 
         app:backgroundTint="#00000000"
         app:cornerRadius="25dp"
@@ -35,19 +35,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <TextView
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_semibold"
             android:text="Smart Light"
             android:textColor="#FFFFFF"
-            android:fontFamily="@font/raleway_semibold"
             android:textSize="18sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/materialButton2"
             app:layout_constraintStart_toEndOf="@+id/materialButton"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/materialButton"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -84,12 +85,12 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="130dp"
             android:layout_height="55dp"
-android:visibility="visible"
-
             android:fontFamily="@font/raleway_semibold"
-            android:text="Add Device"
 
+            android:text="Add Device"
             android:textColor="#FFFFFF"
+
+            android:visibility="visible"
             app:backgroundTint="#00000000"
             app:cornerRadius="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -118,23 +119,6 @@ android:visibility="visible"
         app:lottie_loop="false"
         app:lottie_rawRes="@raw/welcomeanim12" />
 
-    <com.google.android.material.slider.Slider
-        android:id="@+id/H"
-        android:layout_marginBottom="4dp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        app:thumbColor="#FBCF0B"
-        app:labelBehavior="gone"
-        app:trackHeight="10dp"
-
-        app:trackColor="#FBCF0B"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        />
-
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -142,9 +126,9 @@ android:visibility="visible"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginTop="54dp"
+        app:layout_constraintBottom_toTopOf="@id/H"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/H">
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/effectleft"
@@ -179,21 +163,37 @@ android:visibility="visible"
             android:id="@+id/effectText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_semibold"
+            android:text="SOLID"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/effectright"
             app:layout_constraintStart_toEndOf="@+id/effectleft"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textColor="#FFFFFF"
-            android:fontFamily="@font/raleway_semibold"
-            android:textSize="18sp"
-            android:text="SOLID"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+    <com.google.android.material.slider.Slider
+        android:id="@+id/H"
+        android:layout_marginBottom="4dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:thumbColor="#FBCF0B"
+        app:labelBehavior="gone"
+        app:trackHeight="10dp"
 
-
+        app:trackColor="#FBCF0B"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="8dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

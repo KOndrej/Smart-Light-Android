@@ -7,6 +7,7 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -40,6 +41,7 @@ class HomeFragment : Fragment() {
         lateinit var address: String
     }
 var first = 0f
+    var prog = 0f
     var effects = arrayListOf<String>("SOLID", "PULSING", "TWINKLE","PHASING", "RAINBOW", "MUSIC")
     var actualeffect = 0
 
@@ -76,10 +78,12 @@ var first = 0f
                 )
             }
         )
+        Log.e("ROZMER",animation.top.toString())
+        Log.e("ROZMER",animation.height.toString())
         animation.setRenderMode(RenderMode.HARDWARE)
         animation.setOnTouchListener { view, event ->
             animation.setMaxFrame(135)
-            animation.setMinFrame(0)
+            animation.setMinFrame(90)
             animation.cancelAnimation()
             var screenX = event.getX()
             var screenY = event.getY()
@@ -91,13 +95,15 @@ var first = 0f
             when(event.action){
                 MotionEvent.ACTION_DOWN -> {
                     first = viewY
+                    prog = animation.progress
                     true
                 }
                 MotionEvent.ACTION_UP-> {
                     false
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    animation.progress = (((first - viewY)/height))
+                    Log.e("PROCENTA",animation.progress.toString())
+                    animation.progress = (((first - viewY)/height)) + prog
                     animation.pauseAnimation()
 
                     true

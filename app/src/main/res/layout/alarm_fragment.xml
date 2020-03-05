@@ -60,7 +60,7 @@
             android:ems="10"
             android:enabled="true"
             android:fontFamily="sans-serif"
-            android:gravity="right"
+            android:gravity="end"
             android:inputType="time"
             android:singleLine="false"
             android:textColor="#FFFFFF"

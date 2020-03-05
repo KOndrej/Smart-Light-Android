@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.AnimationSet
 import android.view.animation.TranslateAnimation
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieProperty
@@ -36,6 +37,9 @@ class HomeFragment : Fragment() {
     companion object IPadress {
         lateinit var address: String
     }
+
+    var effects = arrayListOf<String>("SOLID", "PULSING", "TWINKLE","PHASING", "RAINBOW", "MUSIC")
+    var actualeffect = 0
 
     var on = true
     override fun onCreateView(
@@ -77,7 +81,7 @@ class HomeFragment : Fragment() {
                 a.duration = 1200
                 a.repeatCount = 0
                 colorslider.startAnimation(a)
-                colorslider.visibility = View.GONE
+                colorslider.visibility = View.INVISIBLE
                 animation.setMinFrame(45)
                 animation.setMaxFrame(90)
                 animation.playAnimation()
@@ -166,6 +170,43 @@ class HomeFragment : Fragment() {
             var api = CallAPI()
             api.execute(address, "", "")
         }
+
+        view.findViewById<MaterialButton>(R.id.effectright).setOnClickListener {
+            actualeffect++
+            if (actualeffect >= effects.size) {
+                actualeffect = 0
+            }
+            CallAPI().execute("192.168.1.179/effect",actualeffect.toString())
+            view.findViewById<TextView>(R.id.effectText).text = effects.get(actualeffect)
+            when (actualeffect) {
+                0,1,2,5 ->{
+                    colorslider.visibility = View.VISIBLE
+                }
+                else ->{
+                    colorslider.visibility = View.INVISIBLE
+                }
+            }
+        }
+
+        view.findViewById<MaterialButton>(R.id.effectleft).setOnClickListener {
+            actualeffect--
+
+            if (actualeffect < 0) {
+                actualeffect = effects.size - 1
+            }
+            CallAPI().execute("192.168.1.179/effect",actualeffect.toString())
+            view.findViewById<TextView>(R.id.effectText).text = effects.get(actualeffect)
+
+            when (actualeffect) {
+                0,1,2,5 ->{
+                    colorslider.visibility = View.VISIBLE
+                }
+                else ->{
+                    colorslider.visibility = View.INVISIBLE
+                }
+            }
+        }
+
         return view
     }
 

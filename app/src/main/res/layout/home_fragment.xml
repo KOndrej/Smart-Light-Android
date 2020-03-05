@@ -35,7 +35,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
+        <TextView
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Smart Light"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/raleway_semibold"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/materialButton2"
+            app:layout_constraintStart_toEndOf="@+id/materialButton"
+            app:layout_constraintTop_toTopOf="parent"
+            />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/materialButton"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -48,6 +60,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:strokeColor="#00000000"
+
             app:strokeWidth="0dp" />
 
 
@@ -63,6 +76,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:strokeColor="#00000000"
+
             app:strokeWidth="0dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -70,7 +84,7 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="130dp"
             android:layout_height="55dp"
-
+android:visibility="visible"
 
             android:fontFamily="@font/raleway_semibold"
             android:text="Add Device"
@@ -120,6 +134,62 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         />
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout11"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="54dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/H">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/effectleft"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="#00000000"
+            app:icon="@drawable/ic_arrow_left"
+            app:iconTint="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="#00000000"
+            app:strokeWidth="0dp" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/effectright"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="#00000000"
+            app:icon="@drawable/ic_arrow_right"
+            app:iconTint="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="#00000000"
+            app:strokeWidth="0dp" />
+
+        <TextView
+            android:id="@+id/effectText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/effectright"
+            app:layout_constraintStart_toEndOf="@+id/effectleft"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/raleway_semibold"
+            android:textSize="18sp"
+            android:text="SOLID"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

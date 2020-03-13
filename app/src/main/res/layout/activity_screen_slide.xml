@@ -22,18 +22,21 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navbar"
+        style="@style/Widget.MaterialComponents.BottomNavigationView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/nav_background"
+        android:elevation="5dp"
         app:itemIconTint="#6fffe9"
         app:itemTextColor="#6fffe9"
+
+        app:labelVisibilityMode="selected"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pager"
-        app:menu="@menu/bottom_nav"
-        android:elevation="5dp">
+        app:menu="@menu/bottom_nav">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 

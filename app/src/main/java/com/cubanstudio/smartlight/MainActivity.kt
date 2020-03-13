@@ -19,19 +19,15 @@ class MainActivity : FragmentActivity() {
     val navigationlistener = BottomNavigationView.OnNavigationItemSelectedListener {
         when(it.itemId){
             R.id.navigation_home -> {
-                mPager.currentItem = 0
-                true
-            }
-            R.id.navigation_explore -> {
-                mPager.currentItem = 2
-                true
-            }
-            R.id.navigation_routines -> {
                 mPager.currentItem = 1
                 true
             }
+            R.id.navigation_routines -> {
+                mPager.currentItem = 0
+                true
+            }
             R.id.navigation_settings -> {
-                mPager.currentItem = 3
+                mPager.currentItem = 2
                 true
             }
 
@@ -81,13 +77,13 @@ class MainActivity : FragmentActivity() {
         override fun getItem(position: Int): Fragment{
 
             when(position){
-                0 -> {
+                1 -> {
 
                     return HomeFragment() }
-                1 -> {return PresetsFragment()}
-                2 -> {return ExploreFragment()}
-                3 -> {return OnOffFragment()}
-                4 -> {return EffectsFragment()}
+                0 -> {return PresetsFragment()}
+
+
+                2 -> {return EffectsFragment()}
 
             }
             return AlarmFragment()

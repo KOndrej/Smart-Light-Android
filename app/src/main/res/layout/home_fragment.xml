@@ -117,7 +117,7 @@
 
         app:lottie_enableMergePathsForKitKatAndAbove="true"
         app:lottie_loop="false"
-        app:lottie_rawRes="@raw/welcomeanim12" />
+        app:lottie_rawRes="@raw/lightbulb" />
 
 
 

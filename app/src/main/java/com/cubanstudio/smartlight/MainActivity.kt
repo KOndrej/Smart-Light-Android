@@ -7,11 +7,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_screen_slide.*
 
-private const val NUM_PAGES = 5
+private const val NUM_PAGES = 3
 
 class MainActivity : FragmentActivity() {
     public var x = ""
@@ -34,6 +35,8 @@ class MainActivity : FragmentActivity() {
             else -> false
         }
     }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_screen_slide)
@@ -52,7 +55,31 @@ class MainActivity : FragmentActivity() {
         val pagerAdapter = ScreenSlidePagerAdapter(supportFragmentManager)
         mPager.adapter = pagerAdapter
         mPager.setPageTransformer(true,ZoomOutTransformer())
+        mPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                when(position){
+                    0 -> navbar.menu.findItem(R.id.navigation_routines).isChecked = true
+                    1 -> navbar.menu.findItem(R.id.navigation_home).isChecked = true
+                    2 -> navbar.menu.findItem(R.id.navigation_settings).isChecked = true
+
+                }
+            }
+        })
         navbar.setOnNavigationItemSelectedListener(navigationlistener)
+        navbar.menu.findItem(R.id.navigation_home).isChecked = true
+        mPager.currentItem = 1
 
     }
 
@@ -86,8 +113,8 @@ class MainActivity : FragmentActivity() {
                 2 -> {return EffectsFragment()}
 
             }
-            return AlarmFragment()
 
+            return HomeFragment()
         }
     }
 

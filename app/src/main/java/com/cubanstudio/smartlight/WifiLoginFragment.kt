@@ -74,7 +74,7 @@ class WifiLoginFragment(private val wifiSSID:String,private val wifiBSSID: Strin
                         activity?.findViewById<BottomNavigationView>(R.id.navbar)
                     navBar?.startAnimation(anim3)
                     navBar?.visibility = View.VISIBLE
-                    HomeFragment.address  = incoming_data as String
+                    //HomeFragment.address  = incoming_data as String
 
                 }
                 "CONNECTING" ->{

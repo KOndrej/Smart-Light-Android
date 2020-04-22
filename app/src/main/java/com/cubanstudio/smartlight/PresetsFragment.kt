@@ -27,6 +27,7 @@ class PresetsFragment :Fragment(){
         }
         routines.sortBy { it.time }
         adapter = RoutinesAdapter(context!!.applicationContext,routines)
+
         val list = view.findViewById<ListView>(R.id.routinesList)
         list.adapter = adapter
        // routines.add(Routine("Alarm","6:00",true, arrayListOf(true,true,true,true,true,true,true)))

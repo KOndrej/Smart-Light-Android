@@ -1,11 +1,15 @@
 package com.cubanstudio.smartlight
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,34 +19,46 @@ import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.AnimationSet
 import android.view.animation.TranslateAnimation
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.core.graphics.red
 import androidx.fragment.app.Fragment
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieProperty
 import com.airbnb.lottie.RenderMode
 import com.airbnb.lottie.model.KeyPath
 import com.airbnb.lottie.value.SimpleLottieValueCallback
+
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.slider.Slider
+import com.madrapps.pikolo.ColorPicker
+import com.madrapps.pikolo.listeners.OnColorSelectionListener
+import com.madrapps.pikolo.listeners.SimpleColorSelectionListener
+import com.skydoves.colorpickerview.ColorEnvelope
+import com.skydoves.colorpickerview.ColorPickerView
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
+import com.triggertrap.seekarc.SeekArc
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.find
 import java.io.IOException
 import java.io.PrintWriter
+import java.net.InetSocketAddress
 import java.net.Socket
 
 
 class HomeFragment : Fragment() {
-    companion object IPadress {
-        lateinit var address: String
-    }
+    var effectsList =
+        arrayListOf<String>("SOLID", "PULSING", "TWINKLE", "PHASING", "RAINBOW", "MUSIC")
+    var choosenEffect = 0
+    lateinit var bulbPic: LottieAnimationView
 
-    var first = 0f
-    var prog = 0f
-    var effects = arrayListOf<String>("SOLID", "PULSING", "TWINKLE", "PHASING", "RAINBOW", "MUSIC")
-    var actualeffect = 0
+    var socket = SocketClient()
+    var hue = 0;
+    var saturation = 0;
+    var value = 255;
 
-    var on = true
-
-    //@SuppressLint("ClickableViewAccessibility")
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,160 +66,182 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         var view = inflater.inflate(R.layout.home_fragment, container, false)
+        socket = (activity as MainActivity).socketClient
+        bulbPic = view.find<LottieAnimationView>(R.id.anim)
 
-        var animation =
-            view.findViewById<LottieAnimationView>(R.id.animation_view)
-        var colorslider = view.findViewById<Slider>(R.id.H)
-        animation.speed = 1.5f
-        animation.setMaxFrame(45)
-        lightBulbColor(animation, Color.argb(1f, .98431372549f, 0.81176470588f, 0.0431372549f)) // NASTAVENI ZAKLADNI BARVY
-        animation.setRenderMode(RenderMode.HARDWARE)
-        animation.setOnTouchListener { view, event ->
-            animation.setMaxFrame(135)
-            animation.setMinFrame(90)
-            animation.cancelAnimation()
-            var screenY = event.getY()
-            var viewY = screenY - view.top
-            var height = view.height
+        // *  device MENU
+        val addDevBut = view.find<MaterialButton>(R.id.adddevice)
+        val devButLeft = view.find<MaterialButton>(R.id.deviceLeft)
+        val devButRight = view.find<MaterialButton>(R.id.deviceRight)
 
+        // * effect MENU
+        val effectText = view.find<TextView>(R.id.effectText)
+        val effButLeft = view.find<MaterialButton>(R.id.effectleft)
+        val effButRight = view.find<MaterialButton>(R.id.effectright)
 
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    first = viewY
-                    prog = animation.progress
+        // * color MENU
+        val hueSlider = view.find<Slider>(R.id.HUEslider)
+        val satSlider = view.find<Slider>(R.id.SATslider)
+        val lightnessSlider = view.find<Slider>(R.id.LIGslider)
+        val speedSlider = view.find<Slider>(R.id.SPEEDslider)
+        bulbPic.setOnClickListener {
+            socket.sendMessage("COLOR", "0", "0", "0")
+        }
 
-                    true
+        bulbPic.setRenderMode(RenderMode.HARDWARE)
+        lightBulbColor(
+            bulbPic,
+            Color.argb(1f, .98431372549f, 0.81176470588f, 0.0431372549f)
+        )
+        hueSlider.trackColor = ColorStateList.valueOf(
+            Color.argb(1f, .98431372549f, 0.81176470588f, 0.0431372549f))
+        hueSlider.thumbColor = ColorStateList.valueOf(
+            Color.argb(1f, .98431372549f, 0.81176470588f, 0.0431372549f))
+        satSlider.trackColor = ColorStateList.valueOf(
+            Color.argb(1f, .98431372549f, 0.81176470588f, 0.0431372549f))
+        satSlider.thumbColor = ColorStateList.valueOf(
+            Color.argb(1f, .98431372549f, 0.81176470588f, 0.0431372549f))
+        // * set Default color of light bulb
+//("SOLID", "PULSING", "TWINKLE", "PHASING", "RAINBOW", "MUSIC")
+        effButLeft.setOnClickListener {
+            choosenEffect--
+            if (choosenEffect < 0)
+                choosenEffect = effectsList.size - 1
+            effectText.text = effectsList[choosenEffect]
+            socket.sendMessage("EFF", choosenEffect.toString())
+            when(effectsList[choosenEffect]){
+                "PHASING","RAINBOW" ->{
+                    hueSlider.visibility = View.INVISIBLE
+                    satSlider.visibility = View.INVISIBLE
                 }
-
-                MotionEvent.ACTION_MOVE -> {
-                    Log.e("PROCENTA", animation.progress.toString())
-                    animation.progress = (((first - viewY) / height)) + prog
-
-                    sendMessage("BRIGHT", map((animation.progress * 255).toInt(),170,255,0,255).toString())
-                    animation.pauseAnimation()
-
-                    true
+                else ->{
+                    hueSlider.visibility = View.VISIBLE
+                    satSlider.visibility = View.VISIBLE
                 }
             }
-            true
+        }
+        effButRight.setOnClickListener {
+            choosenEffect++
+            if (choosenEffect > effectsList.size - 1)
+                choosenEffect = 0
+            effectText.text = effectsList[choosenEffect]
+            socket.sendMessage("EFF", choosenEffect.toString())
+            when(effectsList[choosenEffect]){
+                "PHASING","RAINBOW" ->{
+                    hueSlider.visibility = View.INVISIBLE
+                    satSlider.visibility = View.INVISIBLE
+                }
+                else ->{
+                    hueSlider.visibility = View.VISIBLE
+                    satSlider.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        hueSlider.addOnChangeListener { slider, value, fromUser ->
+            val colorsat = Color.HSVToColor(floatArrayOf(hueSlider.value*360, 1f-satSlider.value, 1f))
+            val colorhue = Color.HSVToColor(floatArrayOf(hueSlider.value*360, 1f, 1f))
+            lightBulbColor(bulbPic, colorsat)
+            hueSlider.thumbColor = ColorStateList.valueOf(colorhue)
+            hueSlider.trackColor = ColorStateList.valueOf(colorhue)
+            satSlider.trackColor = ColorStateList.valueOf(colorsat)
+
+            satSlider.thumbColor = ColorStateList.valueOf(colorsat)
+            socket.sendMessage("HUE",((value*255).toInt()).toString())
+        }
+        satSlider.addOnChangeListener { slider, value, fromUser ->
+            var ar : FloatArray = FloatArray(3)
+            Color.colorToHSV(hueSlider.trackColor.defaultColor,ar)
+            val color = Color.HSVToColor(floatArrayOf(ar[0], 1f-satSlider.value, 1f))
+
+            lightBulbColor(bulbPic, color)
+            satSlider.trackColor = ColorStateList.valueOf(color)
+            satSlider.thumbColor = ColorStateList.valueOf(color)
+            socket.sendMessage("SAT",(((1f-value)*255).toInt()).toString())
+
+        }
+
+        lightnessSlider.addOnChangeListener { slider, value, fromUser ->
+            bulbPic.frame = value.toInt()
+            val brightness:Int = (((value-90f)/46f)*255).toInt()
+            socket.sendMessage("BRIGHT",brightness.toString())
+        }
+
+        speedSlider.addOnChangeListener { slider, value, fromUser ->
+            socket.sendMessage("SPEED",value.toInt().toString())
         }
 
 
+        satSlider.addOnSliderTouchListener(object: Slider.OnSliderTouchListener{
+            override fun onStartTrackingTouch(slider: Slider) {
+                slider.trackHeight=25
+                slider.thumbRadius=35
+            }
 
-        colorslider.addOnChangeListener { slider, value, fromUser ->
+            override fun onStopTrackingTouch(slider: Slider) {
+                slider.trackHeight=5
+                slider.thumbRadius=0
+            }
 
-            val body = (value * 255).toInt().toString()
-            sendMessage("COLOR", (value * 255).toInt().toString())
+        })
+        hueSlider.addOnSliderTouchListener(object: Slider.OnSliderTouchListener{
+            override fun onStartTrackingTouch(slider: Slider) {
+                slider.trackHeight=25
+                slider.thumbRadius=35
+            }
 
-            slider.thumbColor =
-                ColorStateList.valueOf(Color.HSVToColor(255, floatArrayOf(value * 360, 255f, 255f)))
-            slider.trackColor =
-                ColorStateList.valueOf(Color.HSVToColor(255, floatArrayOf(value * 360, 255f, 255f)))
-            lightBulbColor(animation,Color.HSVToColor(255, floatArrayOf(value * 360, 255f, 255f)))
-            animation.refreshDrawableState()
-        }
 
-        view.findViewById<MaterialButton>(R.id.adddevice).setOnClickListener {
-            val anim1 = TranslateAnimation(0f, 0f, 0f, 200f)
-            anim1.duration = 500
-            val anim2 = AlphaAnimation(1f, 0f)
-            anim2.duration = 350
-            val anim3 = AnimationSet(false)
-            anim3.addAnimation(anim1)
-            anim3.addAnimation(anim2)
-            val navBar =
-                activity?.findViewById<BottomNavigationView>(R.id.navbar)
-            navBar?.startAnimation(anim3)
-            navBar?.visibility = View.INVISIBLE
+            override fun onStopTrackingTouch(slider: Slider) {
+                slider.trackHeight=5
+                slider.thumbRadius=0
+            }
+        })
 
+        lightnessSlider.addOnSliderTouchListener(object: Slider.OnSliderTouchListener{
+            override fun onStartTrackingTouch(slider: Slider) {
+                slider.trackHeight=25
+                slider.thumbRadius=35
+            }
+
+            override fun onStopTrackingTouch(slider: Slider) {
+                slider.trackHeight=3
+                slider.thumbRadius=0
+            }
+        })
+
+        speedSlider.addOnSliderTouchListener(object :Slider.OnSliderTouchListener{
+            override fun onStartTrackingTouch(slider: Slider) {
+                slider.trackHeight=25
+                slider.thumbRadius=35
+            }
+
+            override fun onStopTrackingTouch(slider: Slider) {
+                slider.trackHeight=3
+                slider.thumbRadius=0
+            }
+        })
+
+
+        addDevBut.setOnClickListener {
             val ft = fragmentManager?.beginTransaction()
-            ft?.replace(R.id.contain, DeviceListFragment())
-            ft?.addToBackStack("Main")
+            ft?.replace(R.id.contain,DeviceListFragment())
+            ft?.addToBackStack("Presets")
             ft?.commit()
-
         }
 
-
-        view.findViewById<MaterialButton>(R.id.effectright).setOnClickListener {
-            actualeffect++
-            if (actualeffect >= effects.size) {
-                actualeffect = 0
-            }
-            sendMessage("EFF", actualeffect.toString())
-            // CallAPI().execute("192.168.1.179/effect",actualeffect.toString())
-            view.findViewById<TextView>(R.id.effectText).text = effects.get(actualeffect)
-            when (actualeffect) {
-                0, 1, 2, 5 -> {
-                    colorslider.visibility = View.VISIBLE
-                }
-                else -> {
-                    colorslider.visibility = View.INVISIBLE
-                }
-            }
-        }
-
-        view.findViewById<MaterialButton>(R.id.effectleft).setOnClickListener {
-            actualeffect--
-
-            if (actualeffect < 0) {
-                actualeffect = effects.size - 1
-            }
-            sendMessage("EFF", actualeffect.toString())
-            //CallAPI().execute("192.168.1.179/effect",actualeffect.toString())
-            view.findViewById<TextView>(R.id.effectText).text = effects.get(actualeffect)
-
-            when (actualeffect) {
-                0, 1, 2, 5 -> {
-                    colorslider.visibility = View.VISIBLE
-                }
-                else -> {
-                    colorslider.visibility = View.INVISIBLE
-                }
-            }
-        }
 
         return view
     }
 
-    private fun sendMessage(head: String, body: String) {
 
+    private fun addDevice() {
 
-        var thread = Thread(Runnable {
-
-
-            try {
-                //Replace below IP with the IP of that device in which server socket open.
-                //If you change port then change the port number in the server side code also.
-
-                var data = "\u0001${head}\u0002${body}\u0003"
-                data += "AAAA" + "\u0004\r"
-                var s = Socket("192.168.1.179", 9002)
-                var out = s.getOutputStream()
-
-                var output = PrintWriter(out)
-
-                output.println(data)
-                output.flush()
-
-
-
-
-
-                output.close()
-                out.close()
-                s.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            } catch (x: Exception) {
-                x.printStackTrace()
-            }
-
-        })
-
-        thread.start()
     }
 
+
     private fun lightBulbColor(anim: LottieAnimationView, color: Int) {
+
+
         anim.addValueCallback(
             KeyPath("Bulb background", "**"),
             LottieProperty.COLOR_FILTER,
@@ -225,16 +263,7 @@ class HomeFragment : Fragment() {
             }
         )
     }
-
-    fun map(
-        x: Int,
-        in_min: Int,
-        in_max: Int,
-        out_min: Int,
-        out_max: Int
-    ): Int{
-        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
-    }
 }
+
 
 

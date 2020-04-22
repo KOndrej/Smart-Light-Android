@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="Base.Theme" parent="Theme.MaterialComponents">
+    <style name="Base.Theme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -16,6 +16,7 @@
     <style name="TimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:fontFamily">@font/raleway_semibold</item>
     </style>
+
 
 
 
